@@ -32,6 +32,7 @@ export const AppDiv = styled('div')`
     border-radius: 8px;
     padding: 10px;
     text-align: center;
+
     background-color: #cbad96;
     color: #ffffff;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
