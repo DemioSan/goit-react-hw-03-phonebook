@@ -9,30 +9,34 @@ import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
-      { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
-      { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
-      { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
 
+  componentDidMount() {
+    const savedContacts = JSON.parse(localStorage.getItem('contacts')) || [];
+
+    savedContacts.length && this.setState({ contacts: savedContacts });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   handleSubmit = ({ name, number }) => {
     if (
-      this.state.contacts.filter(contact =>
-        contact.name.toLowerCase().includes(name.toLowerCase())
-      ).length !== 0
+      this.state.contacts.some(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
     ) {
       alert(`${name} is already in contacts`);
       return;
     }
 
-    this.setState(prev => {
-      return {
-        contacts: [...prev.contacts, { name, number, id: nanoid() }],
-      };
-    });
+    const newContact = { name, number, id: nanoid() };
+    this.setState(prev => ({ contacts: [...prev.contacts, newContact] }));
   };
 
   handleSearch = e => {
@@ -47,6 +51,7 @@ export class App extends Component {
     );
     this.setState(({ contacts }) => {
       const newContacts = contacts.filter(({ name }) => name !== nameToDelete);
+
       return {
         contacts: newContacts,
       };
@@ -54,9 +59,11 @@ export class App extends Component {
   };
 
   render() {
-    const filteredContacts = this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-    );
+    const filteredContacts = this.state.contacts.length
+      ? this.state.contacts.filter(contact =>
+          contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+        )
+      : [];
 
     return (
       <AppDiv className="main">
