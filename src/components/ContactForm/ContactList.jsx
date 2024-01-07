@@ -20,4 +20,12 @@ export class ContactList extends Component {
       </ul>
     );
   }
+
+  handleDelete = contactId => {
+    this.setState(prevState => ({
+      initialValues: prevState.initialValues.filter(
+        contact => contact.id !== contactId
+      ),
+    }));
+  };
 }

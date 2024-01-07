@@ -60,10 +60,9 @@ export class App extends Component {
 
   render() {
     const filteredContacts = this.state.contacts.length
-      ? this.state.contacts.filter(contact =>
-          contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-        )
-      : [];
+    const filteredContacts = this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+    );
 
     return (
       <AppDiv className="main">
