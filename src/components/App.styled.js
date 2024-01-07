@@ -12,7 +12,6 @@ export const AppDiv = styled('div')`
 
   color: #ffffff;
   background-color: #f4bf96;
-
   padding-bottom: 50px;
 
   ul {
